@@ -61,7 +61,7 @@
 <script>
 // ---- config (per lesson) -------------------------------------------------
 const ORG = "Aloney-Yitzchak";
-const REPO_PATTERN = "lesson-02-gradle-{user}";   // verified against Classroom 50 at deploy time
+const REPO_PATTERN = "ap-cs-11th-lesson-02-gradle-{user}";   // Classroom 50: <classroom>-<assignment>-<username>
 const ISSUE_TITLE = "📝 תשובות שיעור 2";
 const MIN_WORDS = 3, MAX_CHARS = 400, MAX_URL = 7600;
 const QUESTIONS = [
@@ -110,7 +110,7 @@ const user = document.getElementById("user");
 const preview = document.getElementById("repoPreview");
 user.value = store.get(KEY + "user");
 function cleanUser(){ return user.value.trim().replace(/^@/, "").replace(/^https?:\/\/github\.com\//i, "").split("/")[0]; }
-function repoName(){ const u = cleanUser(); return u ? REPO_PATTERN.replace("{user}", u) : ""; }
+function repoName(){ const u = cleanUser().toLowerCase(); return u ? REPO_PATTERN.replace("{user}", u) : ""; }
 function updatePreview(){ preview.textContent = repoName() ? `${ORG}/${repoName()}` : "—"; }
 user.addEventListener("input", () => { store.set(KEY + "user", cleanUser()); updatePreview(); });
 updatePreview();
