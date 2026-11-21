@@ -39,7 +39,7 @@
 <body>
 <header>
   <h1>📝 שיעור 2 — שאלות על מבנה הפרויקט ו-Gradle</h1>
-  <p>ממלאים כאן, לוחצים "שלח", ו-GitHub שומר את התשובות בריפו שלכם. לא עורכים שום קובץ.</p>
+  <p>ממלאים כאן, לוחצים "שלח", ו-GitHub שומר את התשובות בריפו שלכם. לא עורכים שום קובץ. שאלות 7–8 הן בונוס.</p>
 </header>
 <main>
   <div class="card">
@@ -65,12 +65,14 @@ const REPO_PATTERN = "ap-cs-11th-lesson-02-gradle-{user}";   // Classroom 50: <c
 const ISSUE_TITLE = "📝 תשובות שיעור 2";
 const MIN_WORDS = 3, MAX_CHARS = 400, MAX_URL = 7600;
 const QUESTIONS = [
-  {id:"q1", text:"מה ההבדל בין הקובץ build.gradle של הפרויקט (בתיקייה הראשית) לבין build.gradle של app?"},
-  {id:"q2", text:"מה זה minSdk? מה יקרה אם ננסה להתקין את האפליקציה על טלפון עם גרסת Android נמוכה יותר?"},
-  {id:"q3", text:"מה ההבדל בין versionCode לבין versionName? מי רואה כל אחד מהם?"},
-  {id:"q4", text:"באיזו תיקייה בפרויקט נמצאים קבצי ה-Java, באיזו קבצי ה-layout, ובאיזו הקובץ strings.xml?"},
-  {id:"q5", text:"מה עושה Gradle Sync ומתי צריך ללחוץ עליו?"},
-  {id:"q6", text:"חיבור לפרויקט שלך: איזו ספרייה (dependency) האפליקציה שלך כנראה תצטרך, ולמה?"},
+  {id:"q1", bonus:false, text:"בחלון Project (תצוגת Android) יש 3 תיקיות ראשיות. מה השמות שלהן ומה יש בכל אחת?"},
+  {id:"q2", bonus:false, text:"מה התפקיד של הקובץ AndroidManifest.xml? (2–3 משפטים)"},
+  {id:"q3", bonus:false, text:"רשמו 3 תיקיות משנה שנמצאות בתוך res, ומה נמצא בכל אחת."},
+  {id:"q4", bonus:false, text:"מה Gson עושה ולמה זה שימושי? תנו דוגמה מאפליקציה אמיתית (למשל WhatsApp או Instagram)."},
+  {id:"q5", bonus:false, text:"מה קורה כשלוחצים Sync Now? ומה יקרה אם לא נלחץ עליו אחרי שהוספנו dependency?"},
+  {id:"q6", bonus:false, text:"מה ההבדל בין build.gradle (Project) לבין build.gradle (Module: app)? ולמה מפרידים בין קוד (java) למשאבים (res)?"},
+  {id:"q7", bonus:true, text:"בונוס — חיבור לפרויקט שלך: איזו ספרייה (dependency) נוספת האפליקציה שלך כנראה תצטרך, ומה היא עושה?"},
+  {id:"q8", bonus:true, text:"בונוס: מה ההבדל בין minSdk לבין targetSdk?"},
 ];
 
 // ---- storage (best effort; never required) --------------------------------
@@ -87,7 +89,7 @@ QUESTIONS.forEach((q, i) => {
   card.className = "card";
   card.innerHTML = `
     <label class="q" for="${q.id}"><span class="num">${i+1}</span>${q.text}</label>
-    <textarea id="${q.id}" maxlength="${MAX_CHARS}" placeholder="כתבו כאן…"></textarea>
+    <textarea id="${q.id}" maxlength="${MAX_CHARS}" placeholder="${q.bonus ? 'לא חובה…' : 'כתבו כאן…'}"></textarea>
     <div class="meta"><span class="words"></span><span class="chars"></span></div>`;
   form.appendChild(card);
   const ta = card.querySelector("textarea");
@@ -129,7 +131,7 @@ document.getElementById("send").addEventListener("click", async () => {
   if (!/^[A-Za-z0-9-]{1,39}$/.test(cleanUser())) {
     show("err", "כתבו את שם המשתמש שלכם ב-GitHub (אותיות באנגלית, מספרים ומקפים בלבד)."); user.focus(); return;
   }
-  const missing = QUESTIONS.filter(q => words(document.getElementById(q.id).value) < MIN_WORDS)
+  const missing = QUESTIONS.filter(q => !q.bonus && words(document.getElementById(q.id).value) < MIN_WORDS)
                            .map(q => QUESTIONS.indexOf(q) + 1);
   if (missing.length && !confirm(`בשאלות ${missing.join(", ")} יש פחות מ-${MIN_WORDS} מילים — הן לא יקבלו נקודות.\nלשלוח בכל זאת?`)) return;
 
